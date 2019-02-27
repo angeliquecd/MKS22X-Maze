@@ -6,21 +6,14 @@ public class Maze{
     private char[][]maze;
     private boolean animate;//false by default
     /*Constructor loads a maze text file, and sets animate to false by default.
-
       1. The file contains a rectangular ascii maze, made with the following 4 characters:
       '#' - Walls - locations that cannot be moved onto
       ' ' - Empty Space - locations that can be moved onto
       'E' - the location of the goal (exactly 1 per file)
-
       'S' - the location of the start(exactly 1 per file)
-
       2. The maze has a border of '#' around the edges. So you don't have to check for out of bounds!
-
-
       3. When the file is not found OR the file is invalid (not exactly 1 E and 1 S) then:
-
          throw a FileNotFoundException or IllegalStateException
-
     */
 
     public Maze(String filename) throws FileNotFoundException{
@@ -34,7 +27,9 @@ public class Maze{
             String line = inf.nextLine();
             numcols=line.length();
           }
+            System.out.println(""+numrows+numcols);
         maze = new char[numrows][numcols];
+        System.out.println(maze[0][0]);
         int row=-1;
         animate=false;
         while(inf.hasNextLine()){
@@ -42,11 +37,21 @@ public class Maze{
             String line = inf.nextLine();
             for (int col=0;col<line.length();col++){
               maze[row][col]=line.charAt(col);
+              System.out.println(""+maze[row][col]);
             }
             //System.out.println(line);//hopefully you can do other things with the line
         }
     }
-
+public String toString(){
+  String value="";
+  for (int row=0;row<maze.length;row++){
+    for (int col=0;col<maze[0].length;col++){
+      value+=maze[row][col];
+    }
+    value+="\n";
+  }
+  return value;
+}
 
     private void wait(int millis){
          try {
@@ -81,7 +86,7 @@ public class Maze{
 
     */
     public int solve(){
-
+return 4;
             //find the location of the S.
 
 
