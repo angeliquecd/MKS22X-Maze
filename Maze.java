@@ -27,17 +27,19 @@ public class Maze{
             String line = inf.nextLine();
             numcols=line.length();
           }
-            System.out.println(""+numrows+numcols);
+        //    System.out.println(""+numrows+numcols);
         maze = new char[numrows][numcols];
         System.out.println(maze[0][0]);
         int row=-1;
         animate=false;
-        while(inf.hasNextLine()){
+        File text2 = new File(filename);
+        Scanner inf2 = new Scanner(text);
+        while(inf2.hasNextLine()){
           row++;
-            String line = inf.nextLine();
+            String line = inf2.nextLine();
             for (int col=0;col<line.length();col++){
               maze[row][col]=line.charAt(col);
-              System.out.println(""+maze[row][col]);
+            //  System.out.println(""+maze[row][col]);
             }
             //System.out.println(line);//hopefully you can do other things with the line
         }
