@@ -88,7 +88,51 @@ public String toString(){
 
     */
     public int solve(){
-return 4;
+      ArrayList<Integer> moves = new ArrayList<Integer>(4);
+      int xcor =0;
+      int ycor =0;
+      for (int i=0;i<maze.length;i++){
+        for (int b=0;b<maze[0].length;b++){
+          if (maze[i][b]=='S'){
+            xcor=i;
+            ycor=b;
+            maze[i][b]='@';}
+          }
+        }
+    return solveHelper(xcor,ycor);}
+    private int solveHelper(int row, int col){
+      int xcor=row;
+      int ycor=col;
+      int count = 0;
+        int[][] moves = new int[1][1];
+       for (int move=0;move<4;move++){
+         if (move==0){
+           char spot = maze[xcor][ycor+1];
+           moves[0]=0;
+           moves[1]=1;}
+           if (move==1){
+             char spot = maze[xcor][ycor-1];
+             moves[0]=0;
+             moves[1]=-1;}
+             if (move==2){
+               char spot = maze[xcor+1][ycor];
+               moves[0]=1;
+               moves[1]=0;}
+               if (move==3){
+                 char spot = maze[xcor-1][ycor];
+                 moves[0]=-1;
+                 moves[1]=0;}
+           if (spot==' '){
+            spot='@';
+           solveHelper(xcor+moves[0],ycor+moves[1]);}
+           if (spot=='@') {
+             count++;
+             moves=
+         }
+         if (count==0) return -1;
+         else {
+           maze[xcor][ycor]='.'
+      }
             //find the location of the S.
 
 
