@@ -101,35 +101,46 @@ public String toString(){
           }
         }
     System.out.println(this);
-    return solveHelper(xcor,ycor);}
-    private int solveHelper(int row, int col){
+    solve(xcor,ycor,0);
+  return checksol();//temporary until i can fix counting in solve3
+}
+
+    private int solve(int row, int col, int finalcount){
+      if(animate){
+
+          clearTerminal();
+          System.out.println(this);
+
+          wait(20);
+      }
       int xcor=row;
       boolean backtracking =false;
       int ycor=col;
       int countback1 = 0;
       int countback2=0;
       char spot = ' ';
-      int finalcount =0;
-        int[] moves = new int[2];
-        moves[0]=0
-        moves[1]=1
-        moves[2]=0
-        moves[3]=-1
-        moves[4]=1
-        moves[5]=0
-        moves[6]=-1
-        moves[7]=0
+        int[] moves = new int[8];
+        moves[0]=0;
+        moves[1]=1;
+        moves[2]=0;
+        moves[3]=-1;
+        moves[4]=1;
+        moves[5]=0;
+        moves[6]=-1;
+        moves[7]=0;
         int[] movesbackward = new int[2];
         int[] movesbackward1= new int[2];
        for (int move=0;move<7;move+=2){
             spot = maze[xcor+moves[move]][ycor+moves[move+1]];
           if (spot =='E') return finalcount;
            if (spot==' '){//always should advance on empty space
-             maze[xcor][ycor]='@';
+             if (maze[xcor][ycor]!='@') {
+               finalcount++;
+               maze[xcor][ycor]='@';
+             };
             maze[xcor+moves[move]][ycor+moves[move+1]]='@';
-            finalcount++;
           //  System.out.println(this);
-           return solveHelper(xcor+moves[move],ycor+moves[move+1]);}
+           return solve(xcor+moves[move],ycor+moves[move+1],finalcount+1);}
           if (spot=='@') {//counts if there are any @s around
             countback1++;
           movesbackward1[0]=moves[move];
@@ -142,23 +153,28 @@ public String toString(){
     movesbackward[1]=moves[move+1];
     //System.out.println("in it .");
       }
-      System.out.println(spot);
+      //System.out.println(spot);
     }
       if (countback1>0){//prioritizes the @
         finalcount--;
-        maze[xcor][ycor]='.';
-           maze[xcor+movesbackward1[0]][ycor+movesbackward1[1]]='.';
+        if (maze[xcor][ycor]=='@'){
+          maze[xcor][ycor]='.';
+          finalcount--;}
+        maze[xcor+movesbackward1[0]][ycor+movesbackward1[1]]='.';
            //System.out.println(this);
         //   System.out.println(""+xcor+ " "+ycor+ "'"+maze[xcor+movesbackward[0]][ycor+movesbackward[1]]+"''");
-           return solveHelper(xcor+movesbackward1[0],ycor+movesbackward1[1]);
+           return solve(xcor+movesbackward1[0],ycor+movesbackward1[1],finalcount-1);
          }
          if (countback2>0){//should only move to . if no @ is avaiable
            finalcount--;
-           maze[xcor][ycor]='.';
-              maze[xcor+movesbackward[0]][ycor+movesbackward[1]]='.';
+           if (maze[xcor][ycor]=='@'){
+             maze[xcor][ycor]='.';
+             finalcount--;
+           }
+            //  maze[xcor+movesbackward[0]][ycor+movesbackward[1]]='.';
           //    System.out.println(this);
             //  System.out.println(""+xcor+ " "+ycor+"'"+maze[xcor+movesbackward[0]][ycor+movesbackward[1]]+"''");
-              return solveHelper(xcor+movesbackward[0],ycor+movesbackward[1]);
+              return solve(xcor+movesbackward[0],ycor+movesbackward[1],finalcount);
             }
          return -1;//if there is nowhere to go at all
        }
@@ -191,22 +207,14 @@ public String toString(){
 
         All visited spots that are part of the solution are changed to '@'
     */
-    private int solve(int row, int col){ //you can add more parameters since this is private
-
-
-        //automatic animation! You are welcome.
-        if(animate){
-
-            clearTerminal();
-            System.out.println(this);
-
-            wait(20);
-        }
-
-        //COMPLETE SOLVE
-
-        return -1; //so it compiles
+public int checksol(){
+  int count =0;
+  for (int i =0;i<maze.length;i++){
+    for (int j=0;j<maze[0].length;j++){
+      if (maze[i][j]=='@') count++;
     }
-
+  }
+  return count;
+}
 
 }
