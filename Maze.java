@@ -47,6 +47,7 @@ public class Maze{
 public String toString(){
   String value="";
   for (int row=0;row<maze.length;row++){
+    value+=row+" ";
     for (int col=0;col<maze[0].length;col++){
       value+=maze[row][col];
     }
@@ -105,13 +106,15 @@ public String toString(){
       int xcor=row;
       boolean backtracking =false;
       int ycor=col;
-      int count = 0;
+      int countback1 = 0;
+      int countback2=0;
       char spot = ' ';
       int finalcount =0;
         int[] moves = new int[2];
         int[] movesbackward = new int[2];
+        int[] movesbackward1= new int[2];
+        int[] movesbackward2 = new int[2];
        for (int move=0;move<4;move++){
-          count =0;
          if (move==0){
             spot = maze[xcor][ycor+1];
            moves[0]=0;
@@ -130,20 +133,41 @@ public String toString(){
                  moves[1]=0;}
           if (spot =='E') return finalcount;
            if (spot==' '){
+             maze[xcor][ycor]='@';
             maze[xcor+moves[0]][ycor+moves[1]]='@';
             finalcount++;
             System.out.println(this);
            return solveHelper(xcor+moves[0],ycor+moves[1]);}
-          else {
-            count++;
-          movesbackward[0]=moves[0];
-        movesbackward[1]=moves[1];}}
-      if (count>0){
+          if (spot=='@') {
+            countback1++;
+          movesbackward1[0]=moves[0];
+        movesbackward1[1]=moves[1];
+        System.out.println("in it @");
+      }
+      if(spot=='.'){
+        countback2++;
+      movesbackward[0]=moves[0];
+    movesbackward[1]=moves[1];
+    System.out.println("in it .");
+      }
+      System.out.println(spot);
+    }
+      if (countback1>0){
         finalcount--;
-           maze[xcor+movesbackward[0]][ycor+movesbackward[1]]='.';
+        maze[xcor][ycor]='.';
+           maze[xcor+movesbackward1[0]][ycor+movesbackward1[1]]='.';
            System.out.println(this);
-           return solveHelper(xcor+movesbackward[0],ycor+movesbackward[1]);
+           System.out.println(""+xcor+ " "+ycor+ "'"+maze[xcor+movesbackward[0]][ycor+movesbackward[1]]+"''");
+           return solveHelper(xcor+movesbackward1[0],ycor+movesbackward1[1]);
          }
+         if (countback2>0){
+           finalcount--;
+           maze[xcor][ycor]='.';
+              maze[xcor+movesbackward[0]][ycor+movesbackward[1]]='.';
+              System.out.println(this);
+              System.out.println(""+xcor+ " "+ycor+"'"+maze[xcor+movesbackward[0]][ycor+movesbackward[1]]+"''");
+              return solveHelper(xcor+movesbackward[0],ycor+movesbackward[1]);
+            }
          return -1;
        }
             //find the location of the S.
