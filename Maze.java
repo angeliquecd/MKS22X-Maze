@@ -111,6 +111,7 @@ public String toString(){
         int[] moves = new int[2];
         int[] movesbackward = new int[2];
        for (int move=0;move<4;move++){
+          count =0;
          if (move==0){
             spot = maze[xcor][ycor+1];
            moves[0]=0;
@@ -128,26 +129,23 @@ public String toString(){
                  moves[0]=-1;
                  moves[1]=0;}
           if (spot =='E') return finalcount;
-          if (spot=='@') {
-            count++;
-            movesbackward[0]=moves[0];
-            movesbackward[1]=moves[1];
-        }
            if (spot==' '){
             maze[xcor+moves[0]][ycor+moves[1]]='@';
             finalcount++;
             System.out.println(this);
            return solveHelper(xcor+moves[0],ycor+moves[1]);}
-       }
-         if (count==0) return -1;
-         else {
-           backtracking=true;
-           finalcount--;
-           maze[xcor][ycor]='.';
+          else {
+            count++;
+          movesbackward[0]=moves[0];
+        movesbackward[1]=moves[1];}}
+      if (count>0){
+        finalcount--;
            maze[xcor+movesbackward[0]][ycor+movesbackward[1]]='.';
            System.out.println(this);
            return solveHelper(xcor+movesbackward[0],ycor+movesbackward[1]);
          }
+         return -1;
+       }
             //find the location of the S.
 
 
@@ -158,7 +156,7 @@ public String toString(){
 
             //return solve(???,???);
 
-    }
+
 
     /*
       Recursive Solve function:
