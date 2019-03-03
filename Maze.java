@@ -31,7 +31,7 @@ public class Maze{
         maze = new char[numrows][numcols];
         System.out.println(maze[0][0]);
         int row=-1;
-        animate=false;
+        animate=true;
         File text2 = new File(filename);
         Scanner inf2 = new Scanner(text);
         while(inf2.hasNextLine()){
@@ -99,40 +99,55 @@ public String toString(){
             maze[i][b]='@';}
           }
         }
+    System.out.println(this);
     return solveHelper(xcor,ycor);}
     private int solveHelper(int row, int col){
       int xcor=row;
+      boolean backtracking =false;
       int ycor=col;
       int count = 0;
-        int[][] moves = new int[1][1];
+      char spot = ' ';
+      int finalcount =0;
+        int[] moves = new int[2];
+        int[] movesbackward = new int[2];
        for (int move=0;move<4;move++){
          if (move==0){
-           char spot = maze[xcor][ycor+1];
+            spot = maze[xcor][ycor+1];
            moves[0]=0;
            moves[1]=1;}
            if (move==1){
-             char spot = maze[xcor][ycor-1];
+              spot = maze[xcor][ycor-1];
              moves[0]=0;
              moves[1]=-1;}
              if (move==2){
-               char spot = maze[xcor+1][ycor];
+                spot = maze[xcor+1][ycor];
                moves[0]=1;
                moves[1]=0;}
                if (move==3){
-                 char spot = maze[xcor-1][ycor];
+                  spot = maze[xcor-1][ycor];
                  moves[0]=-1;
                  moves[1]=0;}
+          if (spot =='E') return finalcount;
+          if (spot=='@') {
+            count++;
+            movesbackward[0]=moves[0];
+            movesbackward[1]=moves[1];
+        }
            if (spot==' '){
-            spot='@';
-           solveHelper(xcor+moves[0],ycor+moves[1]);}
-           if (spot=='@') {
-             count++;
-             moves=
-         }
+            maze[xcor+moves[0]][ycor+moves[1]]='@';
+            finalcount++;
+            System.out.println(this);
+           return solveHelper(xcor+moves[0],ycor+moves[1]);}
+       }
          if (count==0) return -1;
          else {
-           maze[xcor][ycor]='.'
-      }
+           backtracking=true;
+           finalcount--;
+           maze[xcor][ycor]='.';
+           maze[xcor+movesbackward[0]][ycor+movesbackward[1]]='.';
+           System.out.println(this);
+           return solveHelper(xcor+movesbackward[0],ycor+movesbackward[1]);
+         }
             //find the location of the S.
 
 
