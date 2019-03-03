@@ -111,64 +111,56 @@ public String toString(){
       char spot = ' ';
       int finalcount =0;
         int[] moves = new int[2];
+        moves[0]=0
+        moves[1]=1
+        moves[2]=0
+        moves[3]=-1
+        moves[4]=1
+        moves[5]=0
+        moves[6]=-1
+        moves[7]=0
         int[] movesbackward = new int[2];
         int[] movesbackward1= new int[2];
-        int[] movesbackward2 = new int[2];
-       for (int move=0;move<4;move++){
-         if (move==0){
-            spot = maze[xcor][ycor+1];
-           moves[0]=0;
-           moves[1]=1;}
-           if (move==1){
-              spot = maze[xcor][ycor-1];
-             moves[0]=0;
-             moves[1]=-1;}
-             if (move==2){
-                spot = maze[xcor+1][ycor];
-               moves[0]=1;
-               moves[1]=0;}
-               if (move==3){
-                  spot = maze[xcor-1][ycor];
-                 moves[0]=-1;
-                 moves[1]=0;}
+       for (int move=0;move<7;move+=2){
+            spot = maze[xcor+moves[move]][ycor+moves[move+1]];
           if (spot =='E') return finalcount;
-           if (spot==' '){
+           if (spot==' '){//always should advance on empty space
              maze[xcor][ycor]='@';
-            maze[xcor+moves[0]][ycor+moves[1]]='@';
+            maze[xcor+moves[move]][ycor+moves[move+1]]='@';
             finalcount++;
-            System.out.println(this);
-           return solveHelper(xcor+moves[0],ycor+moves[1]);}
-          if (spot=='@') {
+          //  System.out.println(this);
+           return solveHelper(xcor+moves[move],ycor+moves[move+1]);}
+          if (spot=='@') {//counts if there are any @s around
             countback1++;
-          movesbackward1[0]=moves[0];
-        movesbackward1[1]=moves[1];
-        System.out.println("in it @");
+          movesbackward1[0]=moves[move];
+        movesbackward1[1]=moves[move+1];
+      //  System.out.println("in it @");
       }
-      if(spot=='.'){
+      if(spot=='.'){//counts if there are any . around
         countback2++;
-      movesbackward[0]=moves[0];
-    movesbackward[1]=moves[1];
-    System.out.println("in it .");
+      movesbackward[0]=moves[move];
+    movesbackward[1]=moves[move+1];
+    //System.out.println("in it .");
       }
       System.out.println(spot);
     }
-      if (countback1>0){
+      if (countback1>0){//prioritizes the @
         finalcount--;
         maze[xcor][ycor]='.';
            maze[xcor+movesbackward1[0]][ycor+movesbackward1[1]]='.';
-           System.out.println(this);
-           System.out.println(""+xcor+ " "+ycor+ "'"+maze[xcor+movesbackward[0]][ycor+movesbackward[1]]+"''");
+           //System.out.println(this);
+        //   System.out.println(""+xcor+ " "+ycor+ "'"+maze[xcor+movesbackward[0]][ycor+movesbackward[1]]+"''");
            return solveHelper(xcor+movesbackward1[0],ycor+movesbackward1[1]);
          }
-         if (countback2>0){
+         if (countback2>0){//should only move to . if no @ is avaiable
            finalcount--;
            maze[xcor][ycor]='.';
               maze[xcor+movesbackward[0]][ycor+movesbackward[1]]='.';
-              System.out.println(this);
-              System.out.println(""+xcor+ " "+ycor+"'"+maze[xcor+movesbackward[0]][ycor+movesbackward[1]]+"''");
+          //    System.out.println(this);
+            //  System.out.println(""+xcor+ " "+ycor+"'"+maze[xcor+movesbackward[0]][ycor+movesbackward[1]]+"''");
               return solveHelper(xcor+movesbackward[0],ycor+movesbackward[1]);
             }
-         return -1;
+         return -1;//if there is nowhere to go at all
        }
             //find the location of the S.
 
