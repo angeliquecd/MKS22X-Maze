@@ -47,7 +47,7 @@ public class Maze{
 public String toString(){
   String value="";
   for (int row=0;row<maze.length;row++){
-    value+=row+" ";
+  //  value+=row+" ";
     for (int col=0;col<maze[0].length;col++){
       value+=maze[row][col];
     }
@@ -101,11 +101,13 @@ public String toString(){
           }
         }
     System.out.println(this);
-    solve(xcor,ycor,0);
-  return checksol();//temporary until i can fix counting in solve3
+    solve(xcor,ycor,xcor,ycor,0);
+    int answer=checksol();//temproary fix
+    if (answer!=0) return answer;
+    return -1;
 }
 
-    private int solve(int row, int col, int finalcount){
+    private int solve(int startrow, int startcol,int row, int col, int finalcount){
       if(animate){
 
           clearTerminal();
@@ -114,7 +116,7 @@ public String toString(){
           wait(20);
       }
       int xcor=row;
-      boolean backtracking =false;
+      boolean end =false;
       int ycor=col;
       int countback1 = 0;
       int countback2=0;
@@ -136,11 +138,10 @@ public String toString(){
            if (spot==' '){//always should advance on empty space
              if (maze[xcor][ycor]!='@') {
                finalcount++;
-               maze[xcor][ycor]='@';
-             };
+               maze[xcor][ycor]='@';}
             maze[xcor+moves[move]][ycor+moves[move+1]]='@';
           //  System.out.println(this);
-           return solve(xcor+moves[move],ycor+moves[move+1],finalcount+1);}
+           return solve(startrow,startcol,xcor+moves[move],ycor+moves[move+1],finalcount+1);}
           if (spot=='@') {//counts if there are any @s around
             countback1++;
           movesbackward1[0]=moves[move];
@@ -153,6 +154,9 @@ public String toString(){
     movesbackward[1]=moves[move+1];
     //System.out.println("in it .");
       }
+      if (xcor+moves[move]==startrow && ycor+moves[move+1]==startcol){
+        end=true;
+      }
       //System.out.println(spot);
     }
       if (countback1>0){//prioritizes the @
@@ -163,7 +167,7 @@ public String toString(){
         maze[xcor+movesbackward1[0]][ycor+movesbackward1[1]]='.';
            //System.out.println(this);
         //   System.out.println(""+xcor+ " "+ycor+ "'"+maze[xcor+movesbackward[0]][ycor+movesbackward[1]]+"''");
-           return solve(xcor+movesbackward1[0],ycor+movesbackward1[1],finalcount-1);
+           return solve(startrow,startcol,xcor+movesbackward1[0],ycor+movesbackward1[1],finalcount-1);
          }
          if (countback2>0){//should only move to . if no @ is avaiable
            finalcount--;
@@ -171,10 +175,13 @@ public String toString(){
              maze[xcor][ycor]='.';
              finalcount--;
            }
+           if (end){
+             return -1;
+           }
             //  maze[xcor+movesbackward[0]][ycor+movesbackward[1]]='.';
           //    System.out.println(this);
             //  System.out.println(""+xcor+ " "+ycor+"'"+maze[xcor+movesbackward[0]][ycor+movesbackward[1]]+"''");
-              return solve(xcor+movesbackward[0],ycor+movesbackward[1],finalcount);
+              return solve(startrow,startcol,xcor+movesbackward[0],ycor+movesbackward[1],finalcount);
             }
          return -1;//if there is nowhere to go at all
        }
