@@ -29,9 +29,9 @@ public class Maze{
           }
         //    System.out.println(""+numrows+numcols);
         maze = new char[numrows][numcols];
-        System.out.println(maze[0][0]);
+      //  System.out.println(maze[0][0]);
         int row=-1;
-        animate=true;
+        animate=false;
         File text2 = new File(filename);
         Scanner inf2 = new Scanner(text);
         while(inf2.hasNextLine()){
@@ -100,7 +100,7 @@ public String toString(){
             maze[i][b]='@';}
           }
         }
-    System.out.println(this);
+  //  System.out.println(this);
     solve(xcor,ycor,xcor,ycor,0);
     int answer=checksol();//temproary fix
     if (answer!=0) return answer;
